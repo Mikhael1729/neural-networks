@@ -3,8 +3,8 @@ from perceptrons_neural_network import PerceptronsNeuralNetwork
 network = PerceptronsNeuralNetwork()
 
 # Create neurons
-p1 = network.add()
-p2 = network.add()
+p1 = network.add_input(0)
+p2 = network.add_input(1)
 p3 = network.add()
 p4 = network.add()
 p5 = network.add()

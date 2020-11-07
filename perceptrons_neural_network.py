@@ -1,5 +1,5 @@
 from axon import Axon
-from perceptron import Perceptron
+from perceptron import Perceptron, PerceptronInput
 
 """
 Holds the set of neurons and connections between them via
@@ -13,17 +13,25 @@ class PerceptronsNeuralNetwork:
     self.__default_weight = default_weight
 
   def add(self, threshold=None, weight=None, is_input=False):
-    new_id = len(self.__perceptrons) + 1
+    new_id = self.__generate_next_perceptron_id() 
+    threshold_value = threshold if threshold else self.__default_threshold
 
-    new_perceptron = Perceptron(
-      id = new_id,
-      threshold = threshold if threshold else self.__default_threshold,
-      is_input=is_input
-    )
+    new_perceptron = Perceptron(id = new_id, threshold = threshold_value)
 
-    self.__perceptrons[new_id] = new_perceptron
+    self.__insert_perceptron(new_perceptron)
 
     return new_perceptron
+
+  def add_input(self, value=0):
+    new_id = self.__generate_next_perceptron_id()
+    new_input = PerceptronInput(id=new_id, value=value)
+
+    self.__insert_perceptron(new_input)
+
+    return new_input
+
+  def __insert_perceptron(self, perceptron):
+    self.__perceptrons[perceptron.id] = perceptron
 
   def connect(self, source, destination, weight=None):
     axon = Axon(
@@ -56,4 +64,15 @@ class PerceptronsNeuralNetwork:
 
   def __get_last_axon_id(self):
     last = self.__axons[-1].id if self.__axons else 0
+    return last
+
+  def __generate_next_perceptron_id(self):
+    last = self.__get_last_perceptron_id()
+    new_id = last + 1
+
+    return new_id
+
+  def __get_last_perceptron_id(self):
+    last = len(self.__perceptrons)
+
     return last
