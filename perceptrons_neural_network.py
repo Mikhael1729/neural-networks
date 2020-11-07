@@ -6,7 +6,7 @@ Holds the set of neurons and connections between them via
 a graph representation.
 """
 class PerceptronsNeuralNetwork:
-  def __init__(self, default_threshold=3, default_weight=2):
+  def __init__(self, default_threshold=3, default_weight=-2):
     self.__perceptrons = {} # The nodes.
     self.__axons = [] # The edges.
     self.__default_threshold = default_threshold

@@ -16,7 +16,7 @@ network.connect(p1.id, p3.id)
 network.connect(p2.id, p3.id)
 network.connect(p3.id, p4.id)
 network.connect(p3.id, p5.id)
-network.connect(p3.id, p6.id)
+network.connect(p3.id, p6.id, weight=-4)
 network.connect(p4.id, p7.id)
 network.connect(p5.id, p7.id)
 
