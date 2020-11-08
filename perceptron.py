@@ -1,20 +1,15 @@
 from enum import Enum
 from abc import ABC
-
-class Layer(Enum):
-  INPUT = 1
-  HIDDEN = 2
-  OUTPUT = 3
+from layer import Layer
 
 """
 Perceptron representation
 """
 class Perceptron:
-  def __init__(self, id, threshold=None, adjacents=[], value=None, layer_side=Layer.HIDDEN):
+  def __init__(self, id, threshold=None, value=None, layer_side=Layer.HIDDEN):
     self.id = id
-    self.threshold = threshold
-    self.adjacents = adjacents # Holds the list of connected perceptrons (Axon)
-    self.value = value
+    self.threshold = threshold if not(layer_side == Layer.INPUT) else None
+    self.value = value 
     self.layer_side = layer_side
 
   def __str__(self):

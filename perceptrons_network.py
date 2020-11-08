@@ -1,16 +1,7 @@
 from axon import Axon
-from enum import Enum
 from perceptron import Perceptron
+from layer import Layer
 
-class Layer(Enum):
-  INPUT = 1
-  HIDDEN = 2
-  OUTPUT = 3
-
-"""
-Holds the set of neurons and connections between them via
-a graph representation.
-"""
 class PerceptronsNetwork:
   def __init__(self, default_threshold=3, default_weight=-2):
     self.__perceptrons = {} # The nodes.
@@ -26,75 +17,33 @@ class PerceptronsNetwork:
     self.__outputs = []
     self.__hiddens = []
 
-  @property
-  def perceptrons(self):
-    return self.__perceptrons
-
-  @property
-  def input_layer(self):
-    inputs = []
-    for id in self.__inputs:
-      inputs.append(self.__perceptrons[id])
-
-    return inputs
-
-  @property
-  def input_layer(self):
-    hiddens = []
-    for id in self.__hiddens:
-      hiddens.append(self.__perceptrons[id])
-
-    return hiddens
-
-  @property
-  def output_layer(self):
-    outputs = []
-    for id in self.__outputs:
-      outputs.append(self.__perceptrons[id])
-
-    return outputs
-
-  def add_input(self, value=0):
-    new_id = self.__generate_next_perceptron_id() 
-    new_perceptron = Perceptron(
-      id=new_id,
-      value=value,
-      threshold=self.__default_threshold,
-      layer_side=Layer.INPUT
-    )
-
-    self.__perceptrons[new_id] = new_perceptron
-    self.__inputs.append(new_id)
-
-    return new_perceptron
-
-  def add(self, threshold=None, value=None):
+  def add(self, threshold=None, value=None, layer_side=Layer.HIDDEN):
     new_id = self.__generate_next_perceptron_id() 
     threshold_value = threshold if threshold else self.__default_threshold
 
-    new_perceptron = Perceptron(id=new_id, threshold=threshold_value)
-
-    self.__perceptrons[new_id] = new_perceptron
-    self.__perceptrons_inputs[new_id] = []
-
-    self.__hiddens.append(new_id)
-
-    return new_perceptron
-
-  def add_output(self):
-    new_id = self.__generate_next_perceptron_id() 
     new_perceptron = Perceptron(
       id=new_id,
-      threshold=self.__default_threshold,
-      layer_side=Layer.OUTPUT
+      threshold=threshold_value,
+      value=value,
+      layer_side=layer_side
     )
 
+    # Store the perceptron.
     self.__perceptrons[new_id] = new_perceptron
-    self.__perceptrons_inputs[new_id] = []
 
-    self.__outputs.append(new_id)
+    # Register the key for each perceptron in an specific layer type.
+    if layer_side == Layer.INPUT:
+      self.__inputs.append(new_id)
+    else:
+      self.__perceptrons_inputs[new_id] = []
+
+      if layer_side == Layer.OUTPUT:
+        self.__outputs.append(new_id)
+      else:
+        self.__hiddens.append(new_id)
 
     return new_perceptron
+
 
   def connect(self, source, destination, weight=None):
     # Create axon.
@@ -112,10 +61,7 @@ class PerceptronsNetwork:
       weight=self.__default_weight if not weight else weight
     )
 
-    # Register adjacents. TODO: Do parameters validations and evaluate the use of the axon in the array or the object.
-    self.__perceptrons[source].adjacents.append(new_axon)
-
-    # Register in perceptron_inputs
+    # Save connection.
     if  self.__perceptrons_inputs:
       self.__perceptrons_inputs[destination].append(new_axon)
     else:
@@ -135,9 +81,8 @@ class PerceptronsNetwork:
     else:
       raise Exception(f"The indicated perceptron ({id}) does not exists")
 
-  # Start the network computation.
+  # Start the network computation. The order of execution is guided by the order of perceptrons registration.
   def fire(self):
-    # The order of execution is guided by the order of perceptrons registration.
     for id in self.__perceptrons_inputs:
       input_axons = self.__perceptrons_inputs[id]
       perceptron = self.__perceptrons[id]
@@ -155,6 +100,4 @@ class PerceptronsNetwork:
     return new_id
 
   def __get_last_perceptron_id(self):
-    last = len(self.__perceptrons)
-
-    return last
+    return len(self.__perceptrons)

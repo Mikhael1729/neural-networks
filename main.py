@@ -1,15 +1,16 @@
 from perceptrons_network import PerceptronsNetwork
+from layer import Layer
 
 network = PerceptronsNetwork()
 
 # Create neurons
-p1 = network.add_input(1)
-p2 = network.add_input(1)
+p1 = network.add(value=1, layer_side=Layer.INPUT)
+p2 = network.add(value=1, layer_side=Layer.INPUT)
 p3 = network.add()
 p4 = network.add()
 p5 = network.add()
-p6 = network.add_output()
-p7 = network.add_output()
+p6 = network.add(layer_side=Layer.OUTPUT)
+p7 = network.add(layer_side=Layer.OUTPUT)
 
 # Connect them.
 network.connect(p1.id, p3.id)
