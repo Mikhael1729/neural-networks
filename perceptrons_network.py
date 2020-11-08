@@ -12,12 +12,6 @@ class PerceptronsNetwork:
     self.__default_threshold = default_threshold
     self.__default_weight = default_weight
 
-    # Each of one of the following lists allows to locate the key of each perceptron 
-    # in the corresponding layer side. 
-    self.__inputs = []
-    self.__outputs = []
-    self.__hiddens = []
-
   def add(self, threshold=None, value=None, layer_side=Layer.HIDDEN):
     new_id = self.__generate_next_perceptron_id() 
     threshold_value = threshold if threshold else self.__default_threshold
@@ -33,15 +27,8 @@ class PerceptronsNetwork:
     self.__perceptrons[new_id] = new_perceptron
 
     # Register the key the perceptron depending on its layer type.
-    if layer_side == Layer.INPUT:
-      self.__inputs.append(new_id)
-    else:
+    if layer_side is not Layer.INPUT:
       self.__perceptrons_inputs[new_id] = []
-
-      if layer_side == Layer.OUTPUT:
-        self.__outputs.append(new_id)
-      else:
-        self.__hiddens.append(new_id)
 
     return new_perceptron
 
