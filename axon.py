@@ -7,3 +7,4 @@ class Axon:
     self.weight = weight
     self.source = source
     self.destination = destination
+
