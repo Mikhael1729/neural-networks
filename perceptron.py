@@ -15,18 +15,17 @@ class Perceptron:
   def __str__(self):
     return f"Perceptron(id: {self.id}, value: {self.value})"
   
-  # Update the value of the perceptron depending on its inputs (axons)
-  def update_value(self, input_axons):
+  # Update the value of the perceptron depending on its inputs (edges). It can be used in a network firing.
+  def update_value(self, input_edges):
     if self.layer_side == Layer.INPUT:
       return self.value
 
-    # Sum each weight with each input value
     result = 0
-    for axon in input_axons:
-      weight = axon.weight # int
-      input_value = axon.source # int
+    for edge in input_edges:
+      weight = edge.weight
+      input_value = edge.source
 
-      result = result + (weight * axon.source.value)
+      result = result + (weight * edge.source.value)
 
     # Add the bias.
     bias = self.threshold

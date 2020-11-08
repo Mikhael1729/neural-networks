@@ -1,7 +1,7 @@
 """
 It's the edge between two neurons.
 """
-class Axon:
+class Edge:
   def __init__(self, id, weight, source, destination):
     self.id = id
     self.weight = weight

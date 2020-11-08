@@ -1,13 +1,13 @@
-from axon import Axon
+from edge import Edge
 from perceptron import Perceptron
 from layer import Layer
 
 class PerceptronsNetwork:
   def __init__(self, default_threshold=3, default_weight=-2):
     self.__perceptrons = {}
-    self.__perceptrons_inputs = {} # Stores all input axons for each perceptron.
+    self.__perceptrons_inputs = {} # Stores all input edges for each perceptron.
 
-    self.__last_axon_id = 0
+    self.__last_edge_id = 0
 
     self.__default_threshold = default_threshold
     self.__default_weight = default_weight
@@ -34,16 +34,16 @@ class PerceptronsNetwork:
 
 
   def connect(self, source, destination, weight=None):
-    # Create axon.
+    # Create edge.
     destination_perceptron = self.get_perceptron(destination)
 
     if destination_perceptron.layer_side == Layer.INPUT:
-      raise Exception("Inputs can't have destination axons")
+      raise Exception("Inputs can't have destination edges")
 
     source_perceptron = self.get_perceptron(source)
 
-    new_axon = Axon(
-      id=self.__generate_next_axon_id(),
+    new_edge = Edge(
+      id=self.__generate_next_edge_id(),
       source= source_perceptron,
       destination=destination_perceptron,
       weight=self.__default_weight if not weight else weight
@@ -51,11 +51,11 @@ class PerceptronsNetwork:
 
     # Save connection.
     if  self.__perceptrons_inputs:
-      self.__perceptrons_inputs[destination].append(new_axon)
+      self.__perceptrons_inputs[destination].append(new_edge)
     else:
-      self.__perceptrons_inputs[destination] = [new_axon]
+      self.__perceptrons_inputs[destination] = [new_edge]
 
-    return new_axon
+    return new_edge
 
   def get_perceptron(self, id):
     if not isinstance(id, int):
@@ -72,13 +72,13 @@ class PerceptronsNetwork:
   # Starts the network computation. The order of execution is guided by the order of perceptrons registration.
   def fire(self):
     for id in self.__perceptrons_inputs:
-      input_axons = self.__perceptrons_inputs[id]
+      input_edges = self.__perceptrons_inputs[id]
       perceptron = self.__perceptrons[id]
 
-      perceptron.update_value(input_axons)
+      perceptron.update_value(input_edges)
 
-  def __generate_next_axon_id(self):
-    new_id = self.__last_axon_id + 1
+  def __generate_next_edge_id(self):
+    new_id = self.__last_edge_id + 1
     return new_id
 
   def __generate_next_perceptron_id(self):
