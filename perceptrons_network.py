@@ -4,15 +4,16 @@ from layer import Layer
 
 class PerceptronsNetwork:
   def __init__(self, default_threshold=3, default_weight=-2):
-    self.__perceptrons = {} # The nodes.
-    self.__perceptrons_inputs = {} # Register the input axons for each perceptron.
+    self.__perceptrons = {}
+    self.__perceptrons_inputs = {} # Stores all input axons for each perceptron.
 
-    self.__last_axon_id = 0 # The edges.
+    self.__last_axon_id = 0
 
     self.__default_threshold = default_threshold
     self.__default_weight = default_weight
 
-    # Locate the index of each perceptron for each layer.
+    # Each of one of the following lists allows to locate the key of each perceptron 
+    # in the corresponding layer side. 
     self.__inputs = []
     self.__outputs = []
     self.__hiddens = []
@@ -31,7 +32,7 @@ class PerceptronsNetwork:
     # Store the perceptron.
     self.__perceptrons[new_id] = new_perceptron
 
-    # Register the key for each perceptron in an specific layer type.
+    # Register the key the perceptron depending on its layer type.
     if layer_side == Layer.INPUT:
       self.__inputs.append(new_id)
     else:
@@ -81,7 +82,7 @@ class PerceptronsNetwork:
     else:
       raise Exception(f"The indicated perceptron ({id}) does not exists")
 
-  # Start the network computation. The order of execution is guided by the order of perceptrons registration.
+  # Starts the network computation. The order of execution is guided by the order of perceptrons registration.
   def fire(self):
     for id in self.__perceptrons_inputs:
       input_axons = self.__perceptrons_inputs[id]
