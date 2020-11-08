@@ -14,8 +14,9 @@ a graph representation.
 class PerceptronsNetwork:
   def __init__(self, default_threshold=3, default_weight=-2):
     self.__perceptrons = {} # The nodes.
-    self.__axons = [] # The edges.
     self.__perceptrons_inputs = {} # Register the input axons for each perceptron.
+
+    self.__last_axon_id = 0 # The edges.
 
     self.__default_threshold = default_threshold
     self.__default_weight = default_weight
@@ -111,9 +112,6 @@ class PerceptronsNetwork:
       weight=self.__default_weight if not weight else weight
     )
 
-    # Register axon.
-    self.__axons.append(new_axon)
-    
     # Register adjacents. TODO: Do parameters validations and evaluate the use of the axon in the array or the object.
     self.__perceptrons[source].adjacents.append(new_axon)
 
@@ -147,14 +145,8 @@ class PerceptronsNetwork:
       perceptron.update_value(input_axons)
 
   def __generate_next_axon_id(self):
-    last = self.__get_last_axon_id()
-    new_id = last + 1
-
+    new_id = self.__last_axon_id + 1
     return new_id
-
-  def __get_last_axon_id(self):
-    last = self.__axons[-1].id if self.__axons else 0
-    return last
 
   def __generate_next_perceptron_id(self):
     last = self.__get_last_perceptron_id()
