@@ -6,11 +6,12 @@ from layer import Layer
 Perceptron representation
 """
 class Perceptron:
-  def __init__(self, id, threshold=None, value=None, layer_side=Layer.HIDDEN):
+  def __init__(self, id, threshold=None, value=None, layer_side=Layer.HIDDEN, bias=None):
     self.id = id
     self.threshold = threshold if not(layer_side == Layer.INPUT) else None
     self.value = value 
     self.layer_side = layer_side
+    self.bias = bias if bias else self.threshold
 
   def __str__(self):
     return f"Perceptron(id: {self.id}, value: {self.value})"
@@ -23,13 +24,12 @@ class Perceptron:
     result = 0
     for edge in input_edges:
       weight = edge.weight
-      input_value = edge.source
+      input_value = edge.source.value
 
-      result = result + (weight * edge.source.value)
+      result = result + (weight * input_value)
 
     # Add the bias.
-    bias = self.threshold
-    result = result + bias
+    result = result + self.bias
 
     # Set value
     self.value = 0 if result <= 0 else 1
