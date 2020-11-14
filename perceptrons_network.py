@@ -3,7 +3,7 @@ from perceptron import Perceptron
 from layer import Layer
 
 class PerceptronsNetwork:
-  def __init__(self, default_threshold=3, default_weight=-2):
+  def __init__(self, default_threshold=3, default_weight=-2, default_bias=0):
     self.__perceptrons = {}
     self.__perceptrons_inputs = {} # Stores all input edges for each perceptron.
 
@@ -11,16 +11,19 @@ class PerceptronsNetwork:
 
     self.__default_threshold = default_threshold
     self.__default_weight = default_weight
+    self.__default_bias = default_bias
 
-  def add(self, threshold=None, value=None, layer_side=Layer.HIDDEN):
+  def add(self, threshold=None, value=None, layer_side=Layer.HIDDEN, bias=None):
     new_id = self.__generate_next_perceptron_id() 
     threshold_value = threshold if threshold else self.__default_threshold
+    bias = bias if bias else self.__default_bias
 
     new_perceptron = Perceptron(
       id=new_id,
       threshold=threshold_value,
       value=value,
-      layer_side=layer_side
+      layer_side=layer_side,
+      bias=bias
     )
 
     # Store the perceptron.
