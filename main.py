@@ -1,31 +1,39 @@
 from perceptrons_network import PerceptronsNetwork
 from layer import Layer
+from notes_numbers import notes_numbers
+from chord_modes import chord_modes
 
-network = PerceptronsNetwork()
+# Assign weight automatically.
+network = PerceptronsNetwork(default_threshold=0, default_weight=1)
+
+note1 = notes_numbers["Do"]
+note2 = notes_numbers["Mib"]
+note3 = notes_numbers["Sol"]
 
 # Create neurons
-p1 = network.add(value=1, layer_side=Layer.INPUT)
-p2 = network.add(value=1, layer_side=Layer.INPUT)
-p3 = network.add()
-p4 = network.add()
-p5 = network.add()
-p6 = network.add(layer_side=Layer.OUTPUT)
-p7 = network.add(layer_side=Layer.OUTPUT)
+input_perceptrons = {
+  network.add(value=1, layer_side=Layer.INPUT): note1,
+  network.add(value=1, layer_side=Layer.INPUT): note2,
+  network.add(value=1, layer_side=Layer.INPUT): note3,
+}
+
+output_perceptrons = [
+  network.add(layer_side=Layer.OUTPUT, threshold=14),
+  network.add(layer_side=Layer.OUTPUT, threshold=15),
+  network.add(layer_side=Layer.OUTPUT, threshold=16),
+  network.add(layer_side=Layer.OUTPUT, threshold=17)
+]
 
 # Connect them.
-network.connect(p1.id, p3.id)
-network.connect(p1.id, p4.id)
-network.connect(p2.id, p3.id)
-network.connect(p2.id, p5.id)
-network.connect(p3.id, p4.id)
-network.connect(p3.id, p5.id)
-network.connect(p3.id, p6.id, weight=-4)
-network.connect(p4.id, p7.id)
-network.connect(p5.id, p7.id)
+for key, value in input_perceptrons.items():
+  for operceptron in output_perceptrons:
+    network.connect(key.id, operceptron.id, weight=value)
 
-# Print result
+# Compute the network.
 network.fire()
 
-print("After fire \n---\n")
-print(f"carry: {p6}")
-print(f"sum: {p7}")
+# Print the result.
+for perceptron in output_perceptrons:
+  if perceptron.value == 1:
+    print(chord_modes[perceptron.threshold])
+    break
