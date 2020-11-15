@@ -1,6 +1,6 @@
 chord_modes = {
-  14: "Aumentado",
-  13: "Mayor",
-  12: "Menor",
-  11: "Disminuido"
+  15: "Aumentado",
+  14: "Mayor",
+  13: "Menor",
+  12: "Disminuido"
 }

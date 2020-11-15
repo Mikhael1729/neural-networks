@@ -4,11 +4,11 @@ from notes_numbers import notes_numbers
 from chord_modes import chord_modes
 
 # Assign weight automatically.
-network = PerceptronsNetwork(default_threshold=0, default_weight=1)
+network = PerceptronsNetwork(default_threshold=0, default_weight=1, default_bias=1)
 
 note1 = notes_numbers["Do"]
 note2 = notes_numbers["Mib"]
-note3 = notes_numbers["Sol"]
+note3 = notes_numbers["Solb"]
 
 # Create neurons
 input_perceptrons = {
@@ -18,10 +18,10 @@ input_perceptrons = {
 }
 
 output_perceptrons = [
-  network.add(layer_side=Layer.OUTPUT, threshold=14),
   network.add(layer_side=Layer.OUTPUT, threshold=15),
-  network.add(layer_side=Layer.OUTPUT, threshold=16),
-  network.add(layer_side=Layer.OUTPUT, threshold=17)
+  network.add(layer_side=Layer.OUTPUT, threshold=14),
+  network.add(layer_side=Layer.OUTPUT, threshold=13),
+  network.add(layer_side=Layer.OUTPUT, threshold=12)
 ]
 
 # Connect them.
