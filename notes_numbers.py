@@ -9,7 +9,7 @@ notes_numbers = {
   "Mi": s[4], "E": s[4], "Fab": s[4], "Fb": s[4], "Solbb": s[4], "Gbb": s[4], "Rex": s[4], "Dx": s[4],
   "Fa": s[5], "F": s[5], "Solbb": s[5], "Gbb": s[5], "Mi#": s[5], "E#": s[5], 
   "Fa#": s[6], "F#": s[6], "Solb": s[6], "Gb": s[6], "Mix": s[6], "Ex": s[6],
-  "Sol": s[7], "G": s[7], "Labb": s[7], "Abb": s[7], "Fa#": s[7], "Fax": s[7],
+  "Sol": s[7], "G": s[7], "Labb": s[7], "Abb": s[7], "Fax": s[7], "Fx": s[7],
   "Sol#": s[8], "G#": s[8], "Lab": s[8], "Ab": s[8],
   "La": s[9], "A": s[9], "Sibb": s[9], "Bbb": s[9], "Solx": s[9], "Gx": s[9],
   "La#": s[10], "A#": s[10], "Sib": s[10], "Bb": s[10], "Dobb": s[10], "Cbb": s[10],

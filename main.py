@@ -1,39 +1,46 @@
 from perceptrons_network import PerceptronsNetwork
 from layer import Layer
 from notes_numbers import notes_numbers
-from chord_modes import chord_modes
+from chord_modes import chord_modes, Chord
 
-# Assign weight automatically.
-network = PerceptronsNetwork(default_threshold=0, default_weight=1, default_bias=1)
+chord = Chord("Si", "Re", "Fa#")
+print(chord)
 
-note1 = notes_numbers["Do"]
-note2 = notes_numbers["Mib"]
-note3 = notes_numbers["Solb"]
+"""
+- ¿Cómo conocer el nombre de un acorde?:
 
-# Create neurons
-input_perceptrons = {
-  network.add(value=1, layer_side=Layer.INPUT): note1,
-  network.add(value=1, layer_side=Layer.INPUT): note2,
-  network.add(value=1, layer_side=Layer.INPUT): note3,
-}
+  - Resta de semitonos:
+    
+    - Si la Tercera o la Quinta es menor que la última nota (12) sumar esta a la pertinente
+    - Realizar este cálculo: |Fundamental + Tercera| - |Fundamental + Quinta|
+    - Identificar el nombre del acorde usando esta regla:
 
-output_perceptrons = [
-  network.add(layer_side=Layer.OUTPUT, threshold=15),
-  network.add(layer_side=Layer.OUTPUT, threshold=14),
-  network.add(layer_side=Layer.OUTPUT, threshold=13),
-  network.add(layer_side=Layer.OUTPUT, threshold=12)
-]
+      (Resta de semitonos, posición)
+      
+      Aplicándola, sería así:
 
-# Connect them.
-for key, value in input_perceptrons.items():
-  for operceptron in output_perceptrons:
-    network.connect(key.id, operceptron.id, weight=value)
+      (3, 1), (7, 3), (4, 2)
 
-# Compute the network.
-network.fire()
+  - A general form:
 
-# Print the result.
-for perceptron in output_perceptrons:
-  if perceptron.value == 1:
-    print(chord_modes[perceptron.threshold])
-    break
+    Ignore the semitonestj
+
+  - Mode of a chord:
+    
+    - Know the fundamental note `first_position`
+    - Get the normalized positions of each note by substracting `m - 1` where `m` is the position of the
+      first note of the chord
+    - The sum of the positions encode the mode of the chord. The following are the founded rules:
+
+	self.chord_modes = {
+	  15: "Aumentado",
+	  14: "Mayor",
+	  13: "Menor",
+	  12: "Disminuido"
+	}
+
+
+"""
+
+
+
